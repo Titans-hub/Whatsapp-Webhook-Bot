@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 
-const VERIFY_TOKEN = "Titans_Squid"; // same as WhatsApp dashboard
+const VERIFY_TOKEN = "titans123"; // same as WhatsApp dashboard
 
 app.use(express.json());
 
