@@ -1,5 +1,3 @@
-
-
 const express = require("express");
 const app = express();
 
@@ -36,5 +34,5 @@ app.post("/", (req, res) => {
 // IMPORTANT: use Render's PORT
 const PORT = process.env.PORT || 10000;
 app.listen(PORT, () => {
-  console.log(WhatsApp webhook running on port ${PORT});
+  console.log("WhatsApp webhook running on port" + PORT);
 });
