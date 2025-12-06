@@ -1,29 +1,40 @@
+
+
 const express = require("express");
 const app = express();
 
-const VERIFY_TOKEN = "Titans_Squid"; 
+const VERIFY_TOKEN = "Titans_Squid"; // same as WhatsApp dashboard
 
 app.use(express.json());
 
-// Webhook verification
+// GET - webhook verification + test
 app.get("/", (req, res) => {
+  console.log("GET / webhook hit. Query:", req.query);
+
   const mode = req.query["hub.mode"];
   const token = req.query["hub.verify_token"];
   const challenge = req.query["hub.challenge"];
 
   if (mode === "subscribe" && token === VERIFY_TOKEN) {
+    console.log("WEBHOOK VERIFIED OK");
     return res.status(200).send(challenge);
   }
 
-  res.sendStatus(403);
+  console.log("WEBHOOK VERIFY FAILED");
+  return res.sendStatus(403);
 });
 
-// Receive WhatsApp Messages
+// POST - incoming WhatsApp messages
 app.post("/", (req, res) => {
-  console.log("Incoming Message:", JSON.stringify(req.body, null, 2));
-  res.sendStatus(200);
+  console.log("POST / webhook hit. Incoming Message:");
+  console.log(JSON.stringify(req.body, null, 2));
+
+  // Always reply 200 fast
+  return res.sendStatus(200);
 });
 
-app.listen(10000, () => {
-  console.log("WhatsApp webhook running on port 10000");
+// IMPORTANT: use Render's PORT
+const PORT = process.env.PORT || 10000;
+app.listen(PORT, () => {
+  console.log(WhatsApp webhook running on port ${PORT});
 });
