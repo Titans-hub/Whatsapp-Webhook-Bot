@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 
-const VERIFY_TOKEN = "my_verify_token_123"; 
+const VERIFY_TOKEN = "Titans_Squid"; 
 
 app.use(express.json());
 
