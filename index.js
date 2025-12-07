@@ -1,24 +1,21 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const admin = require("firebase-admin");
-require('dotenv').config();
+require("dotenv").config();
 
 const app = express();
 app.use(bodyParser.json());
 
-// 1. ENVIRONMENT VARIABLES
-const VERIFY_TOKEN = process.env.VERIFY_TOKEN || "titans321";
+const VERIFY_TOKEN = process.env.VERIFY_TOKEN || "titans123";
 const PORT = process.env.PORT || 10000;
 
-// ---------------------------------------------------------
-// 2. FIRESTORE SETUP (Ready for later)
-// ---------------------------------------------------------
+// Firebase – fine if env not set
 let db;
 try {
   if (process.env.FIREBASE_SERVICE_ACCOUNT) {
     const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
     admin.initializeApp({
-      credential: admin.credential.cert(serviceAccount)
+      credential: admin.credential.cert(serviceAccount),
     });
     db = admin.firestore();
     console.log("🔥 Firebase Admin Initialized!");
@@ -29,33 +26,28 @@ try {
   console.error("Firebase Init Error:", error);
 }
 
-// ---------------------------------------------------------
-// 3. WEBHOOK VERIFICATION (GET)
-// ---------------------------------------------------------
+// GET /webhook
 app.get("/webhook", (req, res) => {
   const mode = req.query["hub.mode"];
   const token = req.query["hub.verify_token"];
   const challenge = req.query["hub.challenge"];
 
-  // FIXED LINE BELOW: Added backticks ` `
   console.log(Incoming Verification: Mode='${mode}', Token='${token}');
 
   if (mode && token) {
     if (mode === "subscribe" && token.trim() === VERIFY_TOKEN) {
       console.log("✅ WEBHOOK_VERIFIED");
-      res.status(200).send(challenge.toString());
+      return res.status(200).send(challenge.toString());
     } else {
       console.log("❌ VERIFICATION_FAILED: Token mismatch");
-      res.sendStatus(403);
+      return res.sendStatus(403);
     }
   } else {
-    res.sendStatus(400);
+    return res.sendStatus(400);
   }
 });
 
-// ---------------------------------------------------------
-// 4. HANDLE INCOMING MESSAGES (POST)
-// ---------------------------------------------------------
+// POST /webhook
 app.post("/webhook", async (req, res) => {
   const body = req.body;
 
@@ -70,13 +62,15 @@ app.post("/webhook", async (req, res) => {
     ) {
       const messageDetails = body.entry[0].changes[0].value.messages[0];
       const senderPhone = messageDetails.from;
-      const messageText = messageDetails.text ? messageDetails.text.body : null;
-      
+      const messageText = messageDetails.text
+        ? messageDetails.text.body
+        : null;
+
       console.log(From: ${senderPhone}, Text: ${messageText});
     }
-    res.sendStatus(200);
+    return res.sendStatus(200);
   } else {
-    res.sendStatus(404);
+    return res.sendStatus(404);
   }
 });
 
