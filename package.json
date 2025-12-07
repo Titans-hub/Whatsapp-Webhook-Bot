@@ -1,8 +1,5 @@
-
-
-
 {
-  "name": "Whatsapp-Webhook-Bot",
+  "name": "whatsapp-tracker-webhook",
   "version": "1.0.0",
   "description": "WhatsApp Income Expense Tracker Backend",
   "main": "index.js",
@@ -16,6 +13,6 @@
     "firebase-admin": "^11.11.0"
   },
   "engines": {
-    "node": ">=16.0.0"
+    "node": "20.x"
   }
 }
