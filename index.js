@@ -8,7 +8,7 @@ app.use(bodyParser.json());
 
 // 1. ENVIRONMENT VARIABLES
 // Render Dashboard -> Environment -> Add VERIFY_TOKEN = titans123
-const VERIFY_TOKEN = process.env.VERIFY_TOKEN || "titans123";
+const VERIFY_TOKEN = process.env.VERIFY_TOKEN || "titans321";
 const PORT = process.env.PORT || 10000;
 
 // ---------------------------------------------------------
