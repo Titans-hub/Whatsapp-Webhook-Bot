@@ -1,5 +1,5 @@
 {
-  "name": "wa-webhook-bot",
+  "name": "Whatsapp-Webhook-Bot",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
